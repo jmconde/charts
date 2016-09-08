@@ -1,9 +1,9 @@
 {
-  "name": "morningstar-base-charts",
-  "description": "Base Morningstar charts to use as a starting point for more extensive component and chart development",
+  "name": "jc-charts",
+  "description": "An extensible charts generator",
   "main": "index.js",
   "authors": [
-    "Jose Conde <jose.conde@morningstar.com>"
+    "Jose Conde <jose.conde@gmail.com>"
   ],
   "license": "MIT",
   "moduleType": [
@@ -22,6 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "mui-bootstrap": "https://msstash.morningstar.com/scm/techstd/mui-bootstrap.git"
+    
   }
 }
