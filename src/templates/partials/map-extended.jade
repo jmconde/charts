@@ -1,0 +1,121 @@
+style.
+    #map-extended-chart {
+        height: 600px;
+    }
+.col-xs-12.pad-top(id="map-extended")
+    h3.tall.border-bottom= "Map sample with asynchronous data loading"
+    #map-extended-chart
+    .row
+        .col-xs-12
+            ul.nav.nav-tabs
+                li(role="tablist").active
+                    a(href="#map-extended-1", role="tab").tab="MSBC.Base Implementation"
+                li(role="tablist")
+                    a(href="#map-extended-1b", role="tab").tab="MSBC.ChartBase Implementation"
+                li(role="tablist")
+                    a(href="#map-extended-2", role="tab").tab="App.js"
+                li(role="tablist")
+                    a(href="#map-extended-3", role="tab").tab="Chart initialization"
+            .tab-content
+                div(role="tabpanel").tab-pane.active#map-extended-1
+                    pre
+                        code(class="language-javascript").
+                            class NoAxesCanvas extends MSBC.Base {
+                                constructor(params) {
+                                    super(params);
+                                    this.init({
+                                        container: params.container,
+                                        event: this.event,
+                                        axes: this.axes,
+                                        margins: this.margins,
+                                        className: this.className
+                                    });
+                                }
+
+                                _afterAxisRendered () {}
+
+                                _setAxes() {}
+
+                                _updateAxes() {
+                                    return Promise.resolve();
+                                }
+
+                            }
+
+                div(role="tabpanel").tab-pane#map-extended-1b
+                    pre
+                        code(class="language-javascript").
+                            class Map extends MSBC.ChartBase {
+                                constructor(params) {
+                                    super(params);
+                                }
+
+                                render (options) {
+                                    var dimensions = this.canvas.dimensions,
+                                        width = dimensions.width,
+                                        height = dimensions.height,topology = this.data,
+                                        vis = this.canvas.svg
+                                            .select(".mbc-charts-area")
+                                            .append("g").classed("custom-map", true),
+                                        projection, path;
+
+                                    projection = d3.geo.mercator()
+                                        .scale((width - 3) / (2 * Math.PI))
+                                        .translate([width / 2, height / 2]);
+                                    path = d3.geo.path()
+                                    .projection(projection);
+
+                                    var topo = topojson.object(topology, topology.objects.countries);
+
+                                    vis.selectAll("path")
+                                        .data(topo.geometries)
+                                        .enter()
+                                        .append("path")
+                                        .attr("d", path)
+                                        .attr("stroke", "#333")
+                                        .attr("fill", "#ddd")
+                                        .on("mouseover", function (d) {
+                                            console.log(d), this;
+                                            d3.select(this)
+                                                .transition()
+                                                .duration(100)
+                                                .attr("fill","#ff0000");
+                                        })
+                                        .on("mouseout", function (d) {
+                                            console.log(d), this;
+                                            d3.select(this)
+                                                .transition()
+                                                .duration(100)
+                                                .attr("fill","#ddd");
+                                        });
+                                }
+                            }
+                div(role="tabpanel").tab-pane#map-extended-2
+                    pre
+                        code(class="language-javascript").
+                            map (options) {
+                                d3.json("data/world-110m2.json", function (error, topology) {
+                                    var type = new NoAxesCanvas(options);
+                                    type.add(Map, {
+                                        data: topology
+                                    });
+                                });
+                            }
+                div(role="tabpanel").tab-pane#map-extended-3
+                    pre
+                        code(class="language-javascript").
+                            var options = {
+                                container: "#ap-extended-chart"
+                            };
+
+                            var app = new App();
+                            var chart = BaseCharts.map(options);
+                script(type="text/javascript").
+                    (function (BaseCharts) {
+                        var options = {
+                            container: "#map-extended-chart"
+                        };
+
+                        var app = new App();
+                        var chart = app.map(options);
+                    })(App);

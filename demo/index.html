@@ -1,0 +1,530 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Mornigstar base Charts</title><link rel="stylesheet" type="text/css" href="vendor/css/prism.css"><link rel="stylesheet" type="text/css" href="vendor/css/c3.css"><link rel="stylesheet" type="text/css" href="vendor/css/mui.css"><link rel="stylesheet" type="text/css" href="dist/morningstar-base-charts.css"><link rel="stylesheet" type="text/css" href="morningstar-base-charts-demo.css"><script type="text/javascript" src="vendor/js/jquery.min.js"></script><script type="text/javascript" src="vendor/js/prism.js"></script><script type="text/javascript" src="vendor/js/bootstrap.min.js"></script><script type="text/javascript" src="vendor/js/d3.js"></script><script src="http://d3js.org/topojson.v0.min.js"></script><script type="text/javascript" src="dist/morningstar-base-charts.js"></script><script type="text/javascript" src="app.js"></script></head><body style="overflow:hidden"><div class="col-xs-12 pad-top bg-white"><h1>Morningstar Base Charts<small> v0.0.0</small></h1></div><div><div style="position:absolute;overflow:auto;margin-top:80px;" id="toc" class="col-xs-3 full-height"><ul class="list-group small"><li class="list-group-item"><a href="#bar-chart-intro" class="no-border-bottom">Bar Chart</a></li><li class="list-group-item"><a href="#bar-chart" class="no-border-bottom">Bar Chart - Simple</a></li><li class="list-group-item"><a href="#bar-chart-grouped" class="no-border-bottom">Bar Chart - Grouped</a></li><li class="list-group-item"><a href="#bar-chart-benchmark" class="no-border-bottom">Bar Chart - Benchmark</a></li><li class="list-group-item"><a href="#bar-chart-horizontal" class="no-border-bottom">Horizontal Bar Chart</a></li><li class="list-group-item"><a href="#bar-chart-horizontal-negative" class="no-border-bottom">Horizontal Bar Chart - with negative values</a></li><li class="list-group-item"><a href="#extended" class="no-border-bottom">Extended - Donut chart</a></li><li class="list-group-item"><a href="#map-extended" class="no-border-bottom">Extended - Map Sample</a></li></ul><br><br><br></div><div style="position:absolute;left:25%;overflow:auto;margin-top:80px;padding-bottom:120px;" id="content" class="col-xs-9 full-height"><div id="bar-chart-intro" class="col-xs-12 pad-top"><h2 class="tall border-bottom">Bar Chart</h2><div class="row"><div class="col-xs-12"><ul class="nav nav-tabs"><li role="tablist" class="active"><a href="#bar-chart-intro-1" role="tab" class="tab">App.js</a></li></ul><div class="tab-content"><div role="tabpanel" id="map-extended-1" class="tab-pane active"><pre><code class="language-javascript">class ChartsFactory {
+    ...
+    barChart (options) {
+        var canvasType = new MSBC.configTypes.X_Ordinal_Y_Lineal({
+            container: options.container,
+            domain: options.data.names,
+            isGrouped: false,
+            tickSize: 40,
+            tickSpace: 5
+        });
+        var classification = this._classify(options.data.values);
+        canvasType.add(MSBC.charts.Bar, {
+            data: classification.grouped,
+            type: types.BAR
+        });
+        classification.not_grouped.forEach((data) => {
+            if (data.type === types.BENCHMARK) {
+                canvasType.add(MSBC.charts.Benchmark, {data: data});
+            } else if (data.type === types.DOTS) {
+                canvasType.add(MSBC.charts.Dots, {data: data});
+            }
+        });
+        return canvasType;
+    }
+    ...
+}</code></pre></div></div></div></div></div><div id="bar-chart" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Bar Chart - Simple</h3><div id="chart"></div><div class="row"><div class="col-xs-12"><pre><code class="language-javascript">var data = {
+    names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+    values: [
+        {
+            name: "Value 1",
+            values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+        }
+    ]
+};
+
+var options = {
+    container: "#chart",
+    data: data
+}
+
+var BaseCharts = new MBC();
+var myChart = BaseCharts.barChart(options);</code><script type="text/javascript">(function (BaseCharts) {
+    var data = {
+        names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+        values: [
+            {
+                name: "Value 1",
+                values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+            }
+        ]
+    };
+
+    var options = {
+        container: "#chart",
+        data: data
+    };
+
+    var msbc = new App();
+    msbc.barChart(options);
+})(App);</script></pre></div></div></div><div id="bar-chart-grouped" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Bar Chart - Grouped</h3><div id="chart-grouped"></div><div class="row"><div class="col-xs-12"><pre><code class="language-javascript">var data = {
+    names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+    values: [
+        {
+            name: "Value 1",
+            values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+        },
+        {
+            name: "Value 2",
+            values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+        },
+        {
+            name: "Value 3",
+            values: [-31.34, -22.39, -53.00, -34.52, -8.6, -25.56, -36.89]
+        }
+    ]
+};
+
+var options = {
+    container: "#chart-grouped",
+    data: data
+}
+
+var msbc = new App();
+msbc.barChart(options);</code></pre></div></div></div><script type="text/javascript">(function (BaseCharts) {
+    var data = {
+        names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+        values: [
+            {
+                name: "Value 1",
+                values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+            },
+            {
+                name: "Value 2",
+                values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+            },
+            {
+                name: "Value 3",
+                values: [-31.34, -22.39, -53.00, -34.52, -8.6, -25.56, -36.89]
+            },
+            {
+                name: "Value 5",
+                values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+            }
+        ]
+    };
+
+    var options = {
+        container: "#chart-grouped",
+        data: data
+    }
+
+    var msbc = new App();
+    msbc.barChart(options);
+})(MSBC);</script><div id="bar-chart-benchmark" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Bar Chart - Benchmark</h3><div id="chart-benchmark" class="morningstar-base-charts"></div><div class="row"><div class="col-xs-12"><pre><code class="language-javascript">var data = {
+    names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+    values: [
+        {
+            name: "Value 1",
+            values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+        },
+        {
+            name: "Benchmark",
+            type: "benchmark",
+            values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+        }
+    ]
+};
+
+var options = {
+    container: "#chart-benchmark",
+    data: data
+}
+
+var BaseCharts = new App();
+var myChart = BaseCharts.barChart(options);</code></pre></div></div></div><script type="text/javascript">(function (BaseCharts) {
+    var data = {
+        names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+        values: [
+            {
+                name: "Value 1",
+                values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+            },
+            {
+                name: "Benchmark",
+                type: "benchmark",
+                values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+            }
+        ]
+    };
+
+    var options = {
+        container: "#chart-benchmark",
+        data: data
+    }
+
+    var app = new App();
+    app.barChart(options);
+})(App);</script><div id="bar-chart-horizontal" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Bar Chart - Horizontal</h3><div id="chart-horizontal"></div><div class="row"><div class="col-xs-12"><pre><code class="language-javascript">var data = {
+    values: [
+        {
+            name: "Value 3",
+            values: [45.34, 54.00, 43.52, 38.6, 22.56, 30.89, 17.34, 8.26, 27, 49],
+            type: MSBC.types.BAR
+        }
+    ]
+};
+
+var options = {
+    container: "#chart-horizontal",
+    data: data
+};
+
+var s = new App();
+var chart = s.horizontalBarChart(options);</code></pre></div></div></div><script type="text/javascript">(function () {
+    var data = {
+            values: [
+                {
+                    name: "Value 3",
+                    values: [45.34, 54.00, 43.52, 38.6, 22.56, 30.89, 17.34, 8.26, 27, 49],
+                    type: MSBC.types.BAR
+                }
+            ]
+        };
+
+        var options = {
+            container: "#chart-horizontal",
+            data: data
+        };
+
+        var s = new App();
+        var chart = s.horizontalBarChart(options);
+})(App);</script><div id="bar-chart-horizontal-negative" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Bar Chart - Horizontal w/Negative values</h3><div id="chart-horizontal-negative"></div><div class="row"><div class="col-xs-12"><pre><code class="language-javascript">var data = {
+    values: [
+        {
+            name: "Value 3",
+            values: [45.34, -44.00, 43.52, -38.6, -22.56, 30.89, -17.34, 8.26, 27, 49],
+            type: MSBC.types.BAR
+        }
+    ]
+};
+
+var options = {
+    container: "#chart-horizontal-negative",
+    data: data
+};
+
+var s = new App();
+var chart = s.horizontalBarChart(options);</code></pre></div></div></div><script type="text/javascript">(function () {
+    var data = {
+            values: [
+                {
+                    name: "Value 3",
+                    values: [45.34, -44.00, 43.52, -38.6, -22.56, 30.89, -17.34, 8.26, 27, 49],
+                    type: MSBC.types.BAR
+                }
+            ]
+        };
+
+        var options = {
+            container: "#chart-horizontal-negative",
+            data: data
+        };
+
+        var s = new App();
+        var chart = s.horizontalBarChart(options);
+})(App);</script><div id="extended" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Extended Chart without axes</h3><style>#extended-chart rect {
+    cursor: pointer;                           /* NEW */
+    stroke-width: 2;
+}
+#extended-chart rect.disabled {                      /* NEW */
+    fill: transparent !important;              /* NEW */
+}</style><div id="extended-chart"></div><div class="row"><div class="col-xs-12"><ul class="nav nav-tabs"><li role="tablist" class="active"><a href="#extended-1" role="tab" class="tab">MSBC.Base Implementation</a></li><li role="tablist"><a href="#extended-1b" role="tab" class="tab">MSBC.ChartBase Implementation</a></li><li role="tablist"><a href="#extended-2" role="tab" class="tab">App.js</a></li><li role="tablist"><a href="#extended-3" role="tab" class="tab">Chart initialization</a></li></ul><div class="tab-content"><div role="tabpanel" id="extended-1" class="tab-pane active"><pre><code class="language-javascript">class NoAxesCanvas extends MSBC.Base {
+    constructor(params) {
+        super(params);
+        this.init({
+            container: params.container,
+            event: this.event,
+            axes: this.axes,
+            margins: this.margins,
+            className: this.className
+        });
+    }
+
+    _afterAxisRendered () {}
+
+    _setAxes() {}
+
+    _updateAxes() {
+        return Promise.resolve();
+    }
+
+}
+</code></pre></div><div role="tabpanel" id="extended-1b" class="tab-pane"><pre><code class="language-javascript">class DonutChart extends MSBC.ChartBase {
+    constructor(params) {
+        super(params);
+        this.initData = params.options.initData;
+        this.formatData();
+    }
+
+    formatData () {
+        this.data = this.data.categories.map((category, i) => {
+            var obj = {
+                category,
+                enabled: true
+            };
+
+            this.data.values.forEach((value) => {
+                obj[value.name] = value.values[i];
+            });
+            return obj;
+        });
+    }
+
+    render (options) {
+        var dimensions = this.canvas.dimensions,
+            width = dimensions.width,
+            height = dimensions.height,
+            radius = Math.min(width, height) / 2;
+
+        var arc = d3.svg.arc()
+            .outerRadius(radius)
+            .innerRadius(radius - 75);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(d => d[this.initData]);
+
+        var vis = this.canvas.svg
+            .select(".mbc-charts-area")
+            .append("g").classed("donut", true)
+                .attr("width", width)
+                .attr("height", height);
+
+        vis.append("g")
+            .classed("title", true)
+            .attr("transform", "translate(" + (width / 2) + "," + height / 2 + ")")
+                .append("text")
+                .attr("text-anchor", "middle")
+                .style("stroke", "#333")
+                .style("stroke-width", 2)
+                .style("font-size", 35)
+                .style("opacity", 1)
+                .text(this.initData);
+
+        var chart = vis
+            .append("g")
+            .classed("donut-chart", true)
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        chart = chart.selectAll(".arc")
+            .data(pie(this.data))
+            .enter()
+                .append("g")
+                .classed("arc", true);
+
+        var path = chart.append("path")
+            .attr("d", arc)
+            .style("fill", (d, i) => this.colorScale(i))
+            .attr("class", (d, i) => "arc-" + i)
+            .each(function (d) { this._current = d; });
+
+        var legendRectSize = 18;
+        var legendSpacing = 8;
+
+        var legends = vis.append("g")
+            .classed("legends", true)
+            .attr("transform", "translate(" + ((width / 2) +radius + 30) + "," + (20) + ")");
+
+        var legend = legends.selectAll(".legend").data(this.data).enter()
+            .append("g")
+            .classed("legend", true)
+            .attr("transform", (d, i) => "translate(0, " + (i * (legendRectSize + legendSpacing)) + ")");
+
+        var uglySelf = this;
+        legend.append("rect")
+            .attr("width", legendRectSize)
+            .attr("height", legendRectSize)
+            .style("fill", (d, i) => this.colorScale(i))
+            .style("stroke", (d, i) => this.colorScale(i))
+            .on("click", function (label) {
+                var rect = d3.select(this);
+                var enabled = true;
+                var totalEnabled = d3.sum(uglySelf.data.map(d => d.enabled ? 1 : 0));
+
+                if (rect.classed("disabled")) {
+                    rect.classed("disabled", false);
+                } else {
+                    if (totalEnabled < 2) {
+                        return;
+                    }
+                    rect.classed("disabled", true);
+                    enabled = false;
+                }
+                pie.value(d => {
+                    if (d.category === label.category) {
+                        d.enabled = enabled;
+                    }
+                    return d.enabled ? d[uglySelf.initData] : 0;
+                });
+
+                animate.call(uglySelf);
+            });
+
+        legend.append("text")
+            .attr("x", legendRectSize + legendSpacing)
+            .attr("y", legendRectSize)
+            .text(function(d) { return d.category; });
+
+        function animate() {
+            path = path.data(pie(this.data));
+
+            path.transition()
+                .duration(750)
+                .attrTween("d", function(d) {
+                    var interpolate = d3.interpolate(this._current, d);
+                    this._current = interpolate(0);
+                    return function(t) {
+                        return arc(interpolate(t));
+                    };
+                });
+        }
+    }
+}</code></pre></div><div role="tabpanel" id="extended-2" class="tab-pane"><pre><code class="language-javascript">class ChartsFactory {
+    ...
+    donut (options) {
+        var type = new NoAxesCanvas(options);
+        type.add(DonutChart, {
+            data: options.data,
+            initData: options.initData
+        });
+    }
+    ...
+}</code></pre></div><div role="tabpanel" id="extended-3" class="tab-pane"><pre><code class="language-javascript">var data = {
+    categories: ["<5", "5-13", "14-17", "18-24", "25-44", "45-64", "≥65"],
+    values: [{
+        name: "Population",
+        values: [2704659, 4499890, 2159981, 3853788, 14106543, 8819342, 612463]
+    },
+    {
+        name: "Income",
+        values: [10, 21, 43, 44, 23, 13, 33]
+    }]
+};
+
+var options = {
+    container: "#wrapper",
+    initData: "Population",
+    data: data
+};
+var BaseCharts = new App();
+var chart = BaseCharts.donut(options);</code></pre></div><script type="text/javascript">(function (BaseCharts) {
+    var data = {
+        categories: ["<5", "5-13", "14-17", "18-24", "25-44", "45-64", "≥65"],
+        values: [{
+            name: "Population",
+            values: [2704659, 4499890, 2159981, 3853788, 14106543, 8819342, 612463]
+        },
+        {
+            name: "Income",
+            values: [10, 21, 43, 44, 23, 13, 33]
+        }]
+    };
+
+    var options = {
+        container: "#extended-chart",
+        initData: "Population",
+        data: data
+    };
+    var app = new App();
+    var chart = app.donut(options);
+})(App);</script></div></div></div></div><style>#map-extended-chart {
+    height: 600px;
+}</style><div id="map-extended" class="col-xs-12 pad-top"><h3 class="tall border-bottom">Map sample with asynchronous data loading</h3><div id="map-extended-chart"></div><div class="row"><div class="col-xs-12"><ul class="nav nav-tabs"><li role="tablist" class="active"><a href="#map-extended-1" role="tab" class="tab">MSBC.Base Implementation</a></li><li role="tablist"><a href="#map-extended-1b" role="tab" class="tab">MSBC.ChartBase Implementation</a></li><li role="tablist"><a href="#map-extended-2" role="tab" class="tab">App.js</a></li><li role="tablist"><a href="#map-extended-3" role="tab" class="tab">Chart initialization</a></li></ul><div class="tab-content"><div role="tabpanel" id="map-extended-1" class="tab-pane active"><pre><code class="language-javascript">class NoAxesCanvas extends MSBC.Base {
+    constructor(params) {
+        super(params);
+        this.init({
+            container: params.container,
+            event: this.event,
+            axes: this.axes,
+            margins: this.margins,
+            className: this.className
+        });
+    }
+
+    _afterAxisRendered () {}
+
+    _setAxes() {}
+
+    _updateAxes() {
+        return Promise.resolve();
+    }
+
+}
+</code></pre></div><div role="tabpanel" id="map-extended-1b" class="tab-pane"><pre><code class="language-javascript">class Map extends MSBC.ChartBase {
+    constructor(params) {
+        super(params);
+    }
+
+    render (options) {
+        var dimensions = this.canvas.dimensions,
+            width = dimensions.width,
+            height = dimensions.height,topology = this.data,
+            vis = this.canvas.svg
+                .select(".mbc-charts-area")
+                .append("g").classed("custom-map", true),
+            projection, path;
+
+        projection = d3.geo.mercator()
+            .scale((width - 3) / (2 * Math.PI))
+            .translate([width / 2, height / 2]);
+        path = d3.geo.path()
+        .projection(projection);
+
+        var topo = topojson.object(topology, topology.objects.countries);
+
+        vis.selectAll("path")
+            .data(topo.geometries)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr("stroke", "#333")
+            .attr("fill", "#ddd")
+            .on("mouseover", function (d) {
+                console.log(d), this;
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("fill","#ff0000");
+            })
+            .on("mouseout", function (d) {
+                console.log(d), this;
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("fill","#ddd");
+            });
+    }
+}</code></pre></div><div role="tabpanel" id="map-extended-2" class="tab-pane"><pre><code class="language-javascript">map (options) {
+    d3.json("data/world-110m2.json", function (error, topology) {
+        var type = new NoAxesCanvas(options);
+        type.add(Map, {
+            data: topology
+        });
+    });
+}</code></pre></div><div role="tabpanel" id="map-extended-3" class="tab-pane"><pre><code class="language-javascript">var options = {
+    container: "#ap-extended-chart"
+};
+
+var app = new App();
+var chart = BaseCharts.map(options);</code></pre></div><script type="text/javascript">(function (BaseCharts) {
+    var options = {
+        container: "#map-extended-chart"
+    };
+
+    var app = new App();
+    var chart = app.map(options);
+})(App);</script></div></div></div></div><br><br><br></div></div><script type="text/javascript">$("#toc li a").click(function(e) {
+    e.preventDefault();
+    var hash = $(e.currentTarget.hash);
+    var section = $(hash);
+    var top = section.offset().top - 80;
+    $('#content').animate({
+        scrollTop: '+=' + top
+    }, 500);
+});
+$('.nav.nav-tabs a.tab').click(function (e) {
+    e.preventDefault();
+    console.log(this);
+    $(this).tab('show');
+})</script></body></html>

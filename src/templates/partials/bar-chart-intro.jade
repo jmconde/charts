@@ -1,0 +1,38 @@
+.col-xs-12.pad-top(id="bar-chart-intro")
+    h2.tall.border-bottom= "Bar Chart"
+    .row
+        .col-xs-12
+            ul.nav.nav-tabs
+                li(role="tablist").active
+                    a(href="#bar-chart-intro-1", role="tab").tab="App.js"
+            .tab-content
+                div(role="tabpanel").tab-pane.active#map-extended-1
+                    pre
+                        code(class="language-javascript").
+                            class ChartsFactory {
+                                ...
+                                barChart (options) {
+                                    var canvasType = new MSBC.configTypes.X_Ordinal_Y_Lineal({
+                                        container: options.container,
+                                        domain: options.data.names,
+                                        isGrouped: false,
+                                        tickSize: 40,
+                                        tickSpace: 5
+                                    });
+                                    var classification = this._classify(options.data.values);
+                                    canvasType.add(MSBC.charts.Bar, {
+                                        data: classification.grouped,
+                                        type: types.BAR
+                                    });
+                                    classification.not_grouped.forEach((data) => {
+                                        if (data.type === types.BENCHMARK) {
+                                            canvasType.add(MSBC.charts.Benchmark, {data: data});
+                                        } else if (data.type === types.DOTS) {
+                                            canvasType.add(MSBC.charts.Dots, {data: data});
+                                        }
+                                    });
+                                    return canvasType;
+                                }
+                                ...
+                            }
+

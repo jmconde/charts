@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+    include ./partials/head.jade
+    body
+        style.
+            html, body {
+                height: 100%;
+            }
+            #wrapper {
+                width: 95%;
+                height: 95%;
+            }
+        #wrapper
+        script.
+            var data = {
+                values: [
+                    {
+                        name: "Value 3",
+                        values: [45.34, 54.00, 43.52, 38.6, 22.56, 30.89, 17.34, 8.26, 27, 49],
+                        type: MSBC.types.BAR
+                    }
+                ]
+            };
+
+
+            var options = {
+                container: "#wrapper",
+                data: data
+            };
+
+            var s = new App();
+            var chart = s.horizontalBarChart(options);
+

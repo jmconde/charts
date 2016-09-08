@@ -1,0 +1,240 @@
+.col-xs-12.pad-top(id="extended")
+    h3.tall.border-bottom= "Extended Chart without axes"
+    style.
+        #extended-chart rect {
+            cursor: pointer;                           /* NEW */
+            stroke-width: 2;
+        }
+        #extended-chart rect.disabled {                      /* NEW */
+            fill: transparent !important;              /* NEW */
+        }
+    #extended-chart
+    .row
+        .col-xs-12
+            ul.nav.nav-tabs
+                li(role="tablist").active
+                    a(href="#extended-1", role="tab").tab="MSBC.Base Implementation"
+                li(role="tablist")
+                    a(href="#extended-1b", role="tab").tab="MSBC.ChartBase Implementation"
+                li(role="tablist")
+                    a(href="#extended-2", role="tab").tab="App.js"
+                li(role="tablist")
+                    a(href="#extended-3", role="tab").tab="Chart initialization"
+            .tab-content
+                div(role="tabpanel").tab-pane.active#extended-1
+                    pre
+                        code(class="language-javascript").
+                            class NoAxesCanvas extends MSBC.Base {
+                                constructor(params) {
+                                    super(params);
+                                    this.init({
+                                        container: params.container,
+                                        event: this.event,
+                                        axes: this.axes,
+                                        margins: this.margins,
+                                        className: this.className
+                                    });
+                                }
+
+                                _afterAxisRendered () {}
+
+                                _setAxes() {}
+
+                                _updateAxes() {
+                                    return Promise.resolve();
+                                }
+
+                            }
+
+                div(role="tabpanel").tab-pane#extended-1b
+                    pre
+                        code(class="language-javascript").
+                            class DonutChart extends MSBC.ChartBase {
+                                constructor(params) {
+                                    super(params);
+                                    this.initData = params.options.initData;
+                                    this.formatData();
+                                }
+
+                                formatData () {
+                                    this.data = this.data.categories.map((category, i) => {
+                                        var obj = {
+                                            category,
+                                            enabled: true
+                                        };
+
+                                        this.data.values.forEach((value) => {
+                                            obj[value.name] = value.values[i];
+                                        });
+                                        return obj;
+                                    });
+                                }
+
+                                render (options) {
+                                    var dimensions = this.canvas.dimensions,
+                                        width = dimensions.width,
+                                        height = dimensions.height,
+                                        radius = Math.min(width, height) / 2;
+
+                                    var arc = d3.svg.arc()
+                                        .outerRadius(radius)
+                                        .innerRadius(radius - 75);
+
+                                    var pie = d3.layout.pie()
+                                        .sort(null)
+                                        .value(d => d[this.initData]);
+
+                                    var vis = this.canvas.svg
+                                        .select(".mbc-charts-area")
+                                        .append("g").classed("donut", true)
+                                            .attr("width", width)
+                                            .attr("height", height);
+
+                                    vis.append("g")
+                                        .classed("title", true)
+                                        .attr("transform", "translate(" + (width / 2) + "," + height / 2 + ")")
+                                            .append("text")
+                                            .attr("text-anchor", "middle")
+                                            .style("stroke", "#333")
+                                            .style("stroke-width", 2)
+                                            .style("font-size", 35)
+                                            .style("opacity", 1)
+                                            .text(this.initData);
+
+                                    var chart = vis
+                                        .append("g")
+                                        .classed("donut-chart", true)
+                                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+                                    chart = chart.selectAll(".arc")
+                                        .data(pie(this.data))
+                                        .enter()
+                                            .append("g")
+                                            .classed("arc", true);
+
+                                    var path = chart.append("path")
+                                        .attr("d", arc)
+                                        .style("fill", (d, i) => this.colorScale(i))
+                                        .attr("class", (d, i) => "arc-" + i)
+                                        .each(function (d) { this._current = d; });
+
+                                    var legendRectSize = 18;
+                                    var legendSpacing = 8;
+
+                                    var legends = vis.append("g")
+                                        .classed("legends", true)
+                                        .attr("transform", "translate(" + ((width / 2) +radius + 30) + "," + (20) + ")");
+
+                                    var legend = legends.selectAll(".legend").data(this.data).enter()
+                                        .append("g")
+                                        .classed("legend", true)
+                                        .attr("transform", (d, i) => "translate(0, " + (i * (legendRectSize + legendSpacing)) + ")");
+
+                                    var uglySelf = this;
+                                    legend.append("rect")
+                                        .attr("width", legendRectSize)
+                                        .attr("height", legendRectSize)
+                                        .style("fill", (d, i) => this.colorScale(i))
+                                        .style("stroke", (d, i) => this.colorScale(i))
+                                        .on("click", function (label) {
+                                            var rect = d3.select(this);
+                                            var enabled = true;
+                                            var totalEnabled = d3.sum(uglySelf.data.map(d => d.enabled ? 1 : 0));
+
+                                            if (rect.classed("disabled")) {
+                                                rect.classed("disabled", false);
+                                            } else {
+                                                if (totalEnabled < 2) {
+                                                    return;
+                                                }
+                                                rect.classed("disabled", true);
+                                                enabled = false;
+                                            }
+                                            pie.value(d => {
+                                                if (d.category === label.category) {
+                                                    d.enabled = enabled;
+                                                }
+                                                return d.enabled ? d[uglySelf.initData] : 0;
+                                            });
+
+                                            animate.call(uglySelf);
+                                        });
+
+                                    legend.append("text")
+                                        .attr("x", legendRectSize + legendSpacing)
+                                        .attr("y", legendRectSize)
+                                        .text(function(d) { return d.category; });
+
+                                    function animate() {
+                                        path = path.data(pie(this.data));
+
+                                        path.transition()
+                                            .duration(750)
+                                            .attrTween("d", function(d) {
+                                                var interpolate = d3.interpolate(this._current, d);
+                                                this._current = interpolate(0);
+                                                return function(t) {
+                                                    return arc(interpolate(t));
+                                                };
+                                            });
+                                    }
+                                }
+                            }
+                div(role="tabpanel").tab-pane#extended-2
+                    pre
+                        code(class="language-javascript").
+                            class ChartsFactory {
+                                ...
+                                donut (options) {
+                                    var type = new NoAxesCanvas(options);
+                                    type.add(DonutChart, {
+                                        data: options.data,
+                                        initData: options.initData
+                                    });
+                                }
+                                ...
+                            }
+                div(role="tabpanel").tab-pane#extended-3
+                    pre
+                        code(class="language-javascript").
+                            var data = {
+                                categories: ["<5", "5-13", "14-17", "18-24", "25-44", "45-64", "≥65"],
+                                values: [{
+                                    name: "Population",
+                                    values: [2704659, 4499890, 2159981, 3853788, 14106543, 8819342, 612463]
+                                },
+                                {
+                                    name: "Income",
+                                    values: [10, 21, 43, 44, 23, 13, 33]
+                                }]
+                            };
+
+                            var options = {
+                                container: "#wrapper",
+                                initData: "Population",
+                                data: data
+                            };
+                            var BaseCharts = new App();
+                            var chart = BaseCharts.donut(options);
+                script(type="text/javascript").
+                    (function (BaseCharts) {
+                        var data = {
+                            categories: ["<5", "5-13", "14-17", "18-24", "25-44", "45-64", "≥65"],
+                            values: [{
+                                name: "Population",
+                                values: [2704659, 4499890, 2159981, 3853788, 14106543, 8819342, 612463]
+                            },
+                            {
+                                name: "Income",
+                                values: [10, 21, 43, 44, 23, 13, 33]
+                            }]
+                        };
+
+                        var options = {
+                            container: "#extended-chart",
+                            initData: "Population",
+                            data: data
+                        };
+                        var app = new App();
+                        var chart = app.donut(options);
+                    })(App);

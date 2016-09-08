@@ -1,0 +1,63 @@
+.mbc-chart text {
+  font-family: "UniversLight", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.mbc-chart.mbc-bar-chart .mbc-chart-container, .mbc-chart.mbc-chart-type-1 .mbc-chart-container {
+  width: calc(100% - 155px);
+  float: left; }
+
+.mbc-chart.mbc-bar-chart .mbc-chart-legend, .mbc-chart.mbc-chart-type-1 .mbc-chart-legend {
+  width: 150px;
+  float: left;
+  border-top: 2px solid #333;
+  margin-top: 19px;
+  margin-left: 5px;
+  padding-top: 10px; }
+  .mbc-chart.mbc-bar-chart .mbc-chart-legend > div, .mbc-chart.mbc-chart-type-1 .mbc-chart-legend > div {
+    margin-bottom: 11px; }
+  .mbc-chart.mbc-bar-chart .mbc-chart-legend a, .mbc-chart.mbc-chart-type-1 .mbc-chart-legend a {
+    display: inline-block;
+    border-bottom: 0; }
+    .mbc-chart.mbc-bar-chart .mbc-chart-legend a p, .mbc-chart.mbc-chart-type-1 .mbc-chart-legend a p {
+      margin: 0;
+      font-size: 14px; }
+  .mbc-chart.mbc-bar-chart .mbc-chart-legend .mbc-chart-legend-square, .mbc-chart.mbc-chart-type-1 .mbc-chart-legend .mbc-chart-legend-square {
+    width: 14px;
+    height: 14px;
+    display: inline-block; }
+
+.mbc-chart.mbc-bar-chart .mbc-axis path, .mbc-chart.mbc-chart-type-1 .mbc-axis path {
+  display: none; }
+
+.mbc-chart.mbc-bar-chart .mbc-axis line, .mbc-chart.mbc-chart-type-1 .mbc-axis line {
+  fill: none;
+  stroke: #777;
+  shape-rendering: crispEdges; }
+
+.mbc-chart.mbc-bar-chart .mbc-axis text, .mbc-chart.mbc-chart-type-1 .mbc-axis text {
+  font-size: 13px; }
+
+.mbc-chart.mbc-bar-chart .bar, .mbc-chart.mbc-chart-type-1 .bar {
+  fill: FireBrick; }
+
+.mbc-chart.mbc-bar-chart .tick line, .mbc-chart.mbc-chart-type-1 .tick line {
+  stroke: #dedede; }
+
+.mbc-chart.mbc-bar-chart .tick.dark line, .mbc-chart.mbc-bar-chart .grid line.dark, .mbc-chart.mbc-chart-type-1 .tick.dark line, .mbc-chart.mbc-chart-type-1 .grid line.dark {
+  stroke-width: 2px;
+  stroke: #333; }
+
+.mbc-chart.mbc-bar-chart .c3-axis-y .tick line, .mbc-chart.mbc-bar-chart .c3-axis-y2 .tick line, .mbc-chart.mbc-chart-type-1 .c3-axis-y .tick line, .mbc-chart.mbc-chart-type-1 .c3-axis-y2 .tick line {
+  stroke: #d3d3d3; }
+  .mbc-chart.mbc-bar-chart .c3-axis-y .tick line.dark, .mbc-chart.mbc-bar-chart .c3-axis-y2 .tick line.dark, .mbc-chart.mbc-chart-type-1 .c3-axis-y .tick line.dark, .mbc-chart.mbc-chart-type-1 .c3-axis-y2 .tick line.dark {
+    stroke: #333;
+    stroke-width: 2; }
+
+.mbc-chart-tooltip {
+  background: white;
+  border: 1px solid #333;
+  padding: 6px;
+  position: absolute; }
+  .mbc-chart-tooltip h5 {
+    font-weight: bolder;
+    margin: 0;
+    padding: 0; }

@@ -1,0 +1,43 @@
+doctype html
+html(lang="en")
+    include ./partials/head.jade
+    body(style="overflow:hidden")
+        .col-xs-12.pad-top.bg-white
+            h1="Morningstar Base Charts"
+                small=" v"+version
+        div
+            .col-xs-3.full-height(style="position:absolute;overflow:auto;margin-top:80px;" id="toc")
+                include ./partials/toc.jade
+                br
+                br
+                br
+            .col-xs-9.full-height(style="position:absolute;left:25%;overflow:auto;margin-top:80px;padding-bottom:120px;" id="content")
+                include ./partials/bar-chart-intro.jade
+                include ./partials/bar-chart.jade
+                include ./partials/bar-chart-grouped.jade
+                include ./partials/bar-chart-benchmark.jade
+                include ./partials/bar-chart-horizontal.jade
+                include ./partials/bar-chart-horizontal-negative.jade
+                include ./partials/extended.jade
+                include ./partials/map-extended.jade
+                //- include ./partials/bar-chart-additional-y-axis.jade
+                //- include ./partials/bar-chart-stacked.jade
+                br
+                br
+                br
+
+        script(type='text/javascript').
+            $("#toc li a").click(function(e) {
+                e.preventDefault();
+                var hash = $(e.currentTarget.hash);
+                var section = $(hash);
+                var top = section.offset().top - 80;
+                $('#content').animate({
+                    scrollTop: '+=' + top
+                }, 500);
+            });
+            $('.nav.nav-tabs a.tab').click(function (e) {
+                e.preventDefault();
+                console.log(this);
+                $(this).tab('show');
+            })

@@ -1,0 +1,54 @@
+.col-xs-12.pad-top(id="bar-chart-benchmark")
+    h3.tall.border-bottom= "Bar Chart - Benchmark"
+    #chart-benchmark.morningstar-base-charts
+    .row
+        .col-xs-12
+            pre
+                code(class="language-javascript").
+                    var data = {
+                        names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+                        values: [
+                            {
+                                name: "Value 1",
+                                values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+                            },
+                            {
+                                name: "Benchmark",
+                                type: "benchmark",
+                                values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+                            }
+                        ]
+                    };
+
+                    var options = {
+                        container: "#chart-benchmark",
+                        data: data
+                    }
+
+                    var BaseCharts = new App();
+                    var myChart = BaseCharts.barChart(options);
+script(type="text/javascript").
+    (function (BaseCharts) {
+        var data = {
+            names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+            values: [
+                {
+                    name: "Value 1",
+                    values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+                },
+                {
+                    name: "Benchmark",
+                    type: "benchmark",
+                    values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+                }
+            ]
+        };
+
+        var options = {
+            container: "#chart-benchmark",
+            data: data
+        }
+
+        var app = new App();
+        app.barChart(options);
+    })(App);

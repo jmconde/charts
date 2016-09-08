@@ -1,0 +1,9 @@
+code {
+  font-size: 12px !important;
+  line-height: 1 !important; }
+
+.mbc-chart {
+  width: 90%;
+  height: 300px; }
+  .mbc-chart.mbc-chart-type-1 .mbc-chart-container {
+    width: 100%; }

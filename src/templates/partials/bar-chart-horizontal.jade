@@ -1,0 +1,44 @@
+.col-xs-12.pad-top(id="bar-chart-horizontal")
+    h3.tall.border-bottom= "Bar Chart - Horizontal"
+    #chart-horizontal
+    .row
+        .col-xs-12
+            pre
+                code(class="language-javascript").
+                    var data = {
+                        values: [
+                            {
+                                name: "Value 3",
+                                values: [45.34, 54.00, 43.52, 38.6, 22.56, 30.89, 17.34, 8.26, 27, 49],
+                                type: MSBC.types.BAR
+                            }
+                        ]
+                    };
+
+                    var options = {
+                        container: "#chart-horizontal",
+                        data: data
+                    };
+
+                    var s = new App();
+                    var chart = s.horizontalBarChart(options);
+script(type="text/javascript").
+    (function () {
+        var data = {
+                values: [
+                    {
+                        name: "Value 3",
+                        values: [45.34, 54.00, 43.52, 38.6, 22.56, 30.89, 17.34, 8.26, 27, 49],
+                        type: MSBC.types.BAR
+                    }
+                ]
+            };
+
+            var options = {
+                container: "#chart-horizontal",
+                data: data
+            };
+
+            var s = new App();
+            var chart = s.horizontalBarChart(options);
+    })(App);

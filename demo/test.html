@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Mornigstar base Charts</title><link rel="stylesheet" type="text/css" href="vendor/css/prism.css"><link rel="stylesheet" type="text/css" href="vendor/css/c3.css"><link rel="stylesheet" type="text/css" href="vendor/css/mui.css"><link rel="stylesheet" type="text/css" href="dist/morningstar-base-charts.css"><link rel="stylesheet" type="text/css" href="morningstar-base-charts-demo.css"><script type="text/javascript" src="vendor/js/jquery.min.js"></script><script type="text/javascript" src="vendor/js/prism.js"></script><script type="text/javascript" src="vendor/js/bootstrap.min.js"></script><script type="text/javascript" src="vendor/js/d3.js"></script><script src="http://d3js.org/topojson.v0.min.js"></script><script type="text/javascript" src="dist/morningstar-base-charts.js"></script><script type="text/javascript" src="app.js"></script></head><body><div id="wrapper"></div><script>(function (){
+    var data = {
+        names: ["Jan 2015", "Feb 2015", "March 2015", "April 2015", "May 2015", "June 2015", "July 2015"],
+        values: [
+            {
+                name: "Value 1",
+                values: [83.98, 36.54, 20.01, 19.87, 42.04, 62.85, 73.53]
+            },
+            {
+                name: "Benchmark",
+                type: "benchmark",
+                values: [45.34, 22.39, 54.00, 43.52, 38.6, 22.56, 30.89]
+            }
+        ]
+    };
+    var options = {
+        container: "#wrapper",
+        data: data
+    };
+    var app = new App();
+    app.barChart(options);
+})();</script></body></html>

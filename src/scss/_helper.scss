@@ -1,0 +1,19 @@
+// Helper function
+// ----------------------------------------
+@function getConstant($key, $map) {
+	@if map-has-key($map, $key) {
+		@return map-get($map, $key);
+	}
+
+	@warn "Sorry, `#{$key}` in is not defined within our `#{$map}` map.";
+	@warn "See our constants maps in /assets/stylesheets/constants/";
+	@return null;
+}
+
+// Use example
+// ----------------------------------------
+// 	.element {
+// 		background-color: getConstant(maroon, $colors);
+// 		padding-left: getConstant(sp-lg, $spacer);
+// 		font-family: getConstant(fam-sans, $fonts);
+// 	}

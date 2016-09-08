@@ -1,0 +1,80 @@
+doctype html
+html(lang="en")
+    include ./partials/head.jade
+    body
+        style.
+            html, body {
+                height: 100%;
+            }
+            #wrapper {
+                width: 95%;
+                height: 95%;
+            }
+        #wrapper
+        script.
+            var data = {
+                categories: ["<5", "5-13", "14-17", "18-24", "25-44", "45-64", "≥65"],
+                values: [{
+                    name: "Population",
+                    values: [2704659, 4499890, 2159981, 3853788, 14106543, 8819342, 612463]
+                },
+                {
+                    name: "Income",
+                    values: [10, 21, 43, 44, 23, 13, 33]
+                }]
+            },
+            initData = data.values[0].name;
+
+            var xxx = {
+                container: "#wrapper",
+                data: data
+            };
+
+            function NoAxesCanvasType(container) {
+                var newClass = new MSBC_API.Base({
+                    container: container
+                }).bind(this);
+             }
+            console.log(NoAxesCanvasType);
+
+            //- NoAxesCanvasType.prototype = new MSBC_API.Base();;
+            //- NoAxesCanvasType.prototype.contructor = NoAxesCanvasType;
+
+            //- NoAxesCanvasType.prototype._afterAxisRendered = function(){};;
+            //- NoAxesCanvasType.prototype._setAxes = function(){};
+            //- NoAxesCanvasType.prototype._updateAxes = function () {};
+
+            //- function DonutChart() {
+            //-     MSBC_API.ChartBase.prototype.call(this);
+            //- }
+            //- DonutChart.prototype = Object.create(MSBC_API.ChartBase.prototype);
+            //- DonutChart.prototype.contructor = DonutChart;
+
+            //- DonutChart.prototype.render = function () {
+            //-     this.data = data.categories.map(function (category, i) {
+            //-         var obj = {
+            //-             category,
+            //-             enabled: true
+            //-         };
+
+            //-         data.values.forEach(function (value) {
+            //-             obj[value.name] = value.values[i];
+            //-         });
+            //-         return obj;
+            //-     });
+            //-     console.log(this.data);
+            //- }
+
+            //- var canvastype = new NoAxesCanvasType();
+            //- canvastype.initializer({
+            //-     container: "#wrapper"
+            //- });
+
+            //- console.log("canvastype", canvastype);
+            //- canvastype.add(DonutChart, {
+            //-     data: data
+            //- })
+
+
+
+

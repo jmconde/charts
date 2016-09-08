@@ -1,0 +1,27 @@
+{
+  "name": "morningstar-base-charts",
+  "description": "Base Morningstar charts to use as a starting point for more extensive component and chart development",
+  "main": "index.js",
+  "authors": [
+    "Jose Conde <jose.conde@morningstar.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mui-bootstrap": "https://msstash.morningstar.com/scm/techstd/mui-bootstrap.git"
+  }
+}
