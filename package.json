@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "jc-charts",
-  "moduleName": "MSBC",
+  "moduleName": "Charts",
   "version": "0.0.0",
   "description": "Extensible chart generator.",
   "repository": "",
