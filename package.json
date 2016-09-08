@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "morningstar-base-charts",
+  "name": "jc-charts",
   "moduleName": "MSBC",
   "version": "0.0.0",
-  "description": "Base Morningstar charts to use as a starting point for more extensive component and chart development ",
+  "description": "Extensible chart generator.",
   "repository": "",
   "author": "",
   "license": "MIT",
