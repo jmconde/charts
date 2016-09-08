@@ -1,11 +1,3 @@
-/**
- * morningstar-base-charts
- *
- * Copyright © 2016 . All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
 
 // import d3 from "../../node_modules/d3/build/d3.js";
 import d3_overrides from "./utils/d3.overrides.js";
